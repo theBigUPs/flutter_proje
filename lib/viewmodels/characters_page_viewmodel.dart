@@ -15,7 +15,7 @@ class CharactersPageViewModel with ChangeNotifier {
   List<Character> get characterList => _characterList;
 
   int _page = 1;
-
+  bool _canIncrease = true;
   int get page => _page;
 
   set page(int value) {
@@ -28,6 +28,7 @@ class CharactersPageViewModel with ChangeNotifier {
     http.Response res = await http.get(uri);
 
     if (res.statusCode == 200) {
+      _canIncrease = true;
       characterList.clear();
       List<dynamic> characters = jsonDecode(res.body)["results"];
       print(characters[0]["name"]);
@@ -37,6 +38,8 @@ class CharactersPageViewModel with ChangeNotifier {
       }
       notifyListeners();
     } else {
+      //_canIncrease = false;
+      _page--;
       createSnackbar(c, "failed to get proper response");
     }
   }
@@ -48,6 +51,18 @@ class CharactersPageViewModel with ChangeNotifier {
   }
 
   void nextButton(BuildContext c) {
-    _getCharacters(c);
+    if (_canIncrease) {
+      _page++;
+      url = "https://rickandmortyapi.com/api/character?page=$_page";
+      _getCharacters(c);
+    }
+  }
+
+  void prevButton(BuildContext c) {
+    if (_page >= 2) {
+      _page--;
+      url = "https://rickandmortyapi.com/api/character?page=$_page";
+      _getCharacters(c);
+    }
   }
 }

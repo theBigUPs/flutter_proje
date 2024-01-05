@@ -36,18 +36,12 @@ class CharactersPage extends StatelessWidget {
         ),
         ElevatedButton(
             onPressed: () {
-              viewModel.page++;
-              viewModel.url =
-                  "https://rickandmortyapi.com/api/character?page=${viewModel.page}";
               viewModel.nextButton(context);
             },
             child: const Text("next")),
         ElevatedButton(
             onPressed: () {
-              viewModel.page--;
-              viewModel.url =
-                  "https://rickandmortyapi.com/api/character?page=${viewModel.page}";
-              viewModel.nextButton(context);
+              viewModel.prevButton(context);
             },
             child: const Text("prev"))
       ],
