@@ -18,6 +18,7 @@ class CharactersPage extends StatelessWidget {
     final viewModel =
         Provider.of<CharactersPageViewModel>(context, listen: false);
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
           child: Consumer<CharactersPageViewModel>(

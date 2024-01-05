@@ -15,6 +15,7 @@ class CharactersPageViewModel with ChangeNotifier {
   List<Character> get characterList => _characterList;
 
   int _page = 1;
+  int finpage = 0;
   bool _canIncrease = true;
   int get page => _page;
 
@@ -30,7 +31,11 @@ class CharactersPageViewModel with ChangeNotifier {
     if (res.statusCode == 200) {
       _canIncrease = true;
       characterList.clear();
-      List<dynamic> characters = jsonDecode(res.body)["results"];
+      Map<String, dynamic> body = jsonDecode(res.body);
+      List<dynamic> characters = body["results"];
+      Map<String, dynamic> info = body["info"];
+      finpage = info["pages"];
+      //print(info["count"]);
       //print(characters[0]["name"]);
       for (Map<String, dynamic> characterMap in characters) {
         Character char = Character.fromMap(characterMap);
@@ -51,9 +56,12 @@ class CharactersPageViewModel with ChangeNotifier {
   }
 
   void nextButton(BuildContext c) {
-    _page++;
-    url = "https://rickandmortyapi.com/api/character?page=$_page";
-    _getCharacters(c);
+    if (_page < finpage) {
+      _page++;
+
+      url = "https://rickandmortyapi.com/api/character?page=$_page";
+      _getCharacters(c);
+    }
   }
 
   void prevButton(BuildContext c) {
