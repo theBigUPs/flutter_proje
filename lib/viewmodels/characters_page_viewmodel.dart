@@ -44,7 +44,7 @@ class CharactersPageViewModel with ChangeNotifier {
       notifyListeners();
     } else {
       //_canIncrease = false;
-      _page--;
+      //_page--;
       createSnackbar(c, "failed to get proper response");
     }
   }
