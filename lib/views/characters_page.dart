@@ -15,16 +15,42 @@ class CharactersPage extends StatelessWidget {
   }
 
   Widget _charactersListView(BuildContext context) {
-    return Consumer<CharactersPageViewModel>(
-      builder: (context, viewModel, child) => ListView.builder(
-        itemCount: viewModel.characterList.length,
-        itemBuilder: (context, index) {
-          return ChangeNotifierProvider.value(
-            value: viewModel.characterList[index],
-            child: _buildListTile(context),
-          );
-        },
-      ),
+    final viewModel =
+        Provider.of<CharactersPageViewModel>(context, listen: false);
+    return Column(
+      children: [
+        Flexible(
+          child: Consumer<CharactersPageViewModel>(
+            builder: (context, viewModel, child) => ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: viewModel.characterList.length,
+              itemBuilder: (context, index) {
+                return ChangeNotifierProvider.value(
+                  value: viewModel.characterList[index],
+                  child: _buildListTile(context),
+                );
+              },
+            ),
+          ),
+        ),
+        ElevatedButton(
+            onPressed: () {
+              viewModel.page++;
+              viewModel.url =
+                  "https://rickandmortyapi.com/api/character?page=${viewModel.page}";
+              viewModel.nextButton(context);
+            },
+            child: const Text("next")),
+        ElevatedButton(
+            onPressed: () {
+              viewModel.page--;
+              viewModel.url =
+                  "https://rickandmortyapi.com/api/character?page=${viewModel.page}";
+              viewModel.nextButton(context);
+            },
+            child: const Text("prev"))
+      ],
     );
   }
 

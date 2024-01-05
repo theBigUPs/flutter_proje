@@ -11,14 +11,24 @@ class CharactersPageViewModel with ChangeNotifier {
       _getCharacters(c);
     });
   }
-  List<Character> get characterList => _characterList;
-  final String url = "https://rickandmortyapi.com/api/character";
 
+  List<Character> get characterList => _characterList;
+
+  int _page = 1;
+
+  int get page => _page;
+
+  set page(int value) {
+    _page = value;
+  }
+
+  String url = "https://rickandmortyapi.com/api/character?page=";
   void _getCharacters(BuildContext c) async {
     Uri uri = Uri.parse(url);
     http.Response res = await http.get(uri);
 
     if (res.statusCode == 200) {
+      characterList.clear();
       List<dynamic> characters = jsonDecode(res.body)["results"];
       print(characters[0]["name"]);
       for (Map<String, dynamic> characterMap in characters) {
@@ -35,5 +45,9 @@ class CharactersPageViewModel with ChangeNotifier {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
+  }
+
+  void nextButton(BuildContext c) {
+    _getCharacters(c);
   }
 }
