@@ -31,7 +31,7 @@ class CharactersPageViewModel with ChangeNotifier {
       _canIncrease = true;
       characterList.clear();
       List<dynamic> characters = jsonDecode(res.body)["results"];
-      print(characters[0]["name"]);
+      //print(characters[0]["name"]);
       for (Map<String, dynamic> characterMap in characters) {
         Character char = Character.fromMap(characterMap);
         _characterList.add(char);
@@ -51,11 +51,9 @@ class CharactersPageViewModel with ChangeNotifier {
   }
 
   void nextButton(BuildContext c) {
-    if (_canIncrease) {
-      _page++;
-      url = "https://rickandmortyapi.com/api/character?page=$_page";
-      _getCharacters(c);
-    }
+    _page++;
+    url = "https://rickandmortyapi.com/api/character?page=$_page";
+    _getCharacters(c);
   }
 
   void prevButton(BuildContext c) {
